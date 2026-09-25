@@ -19,13 +19,11 @@ Instead of writing the calculation multiple times, you can create a function to 
 ============================================
 KEY VOCABULARY
 ============================================
-- list:
-- for loop:
-- while loop:
-- index:
-- iteration:
-(add more as needed)
-
+- Function – 
+- Function Name –
+- Parameter – 
+- Argument – 
+- Input -
 
 ============================================
 MY OWN EXAMPLE(S)
@@ -34,8 +32,23 @@ Write at least one working example below that you
 came up with yourself — not copied from class.
 """
 
-# --- your code example goes here ---
+def calculate_total(ingredient_price, styro_boxes, tax_rate):
+    styro_price = 5
+    box_cost = styro_boxes * styro_price
 
+    subtotal = ingredient_price + box_cost
+    tax = subtotal * tax_rate
+    total = subtotal + tax
+
+    return total
+
+ingredient_price = 100
+styro_boxes = 2
+tax_rate = 0.12
+
+total_price = calculate_total(ingredient_price, styro_boxes, tax_rate)
+
+print("Total price: ₱", total_price)
 
 """
 ============================================
