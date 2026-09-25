@@ -62,5 +62,11 @@ while an argument is the actual value given to the function when using it.
 ============================================
 HOW THIS CONNECTS TO SOMETHING ELSE
 ============================================
-[optional]
+
+Functions connect to real-life tasks and other parts of programming because
+they allow us to repeat a task without doing all the steps again.
+For example, in a karinderya, a function can calculate the total price of different meals.
+The same idea can also be used for calculating bills, adding discounts, or computing change.
+This shows how functions make programs more organized and easier to use.
+
 """
