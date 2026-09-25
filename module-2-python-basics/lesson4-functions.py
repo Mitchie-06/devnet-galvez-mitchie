@@ -54,9 +54,10 @@ print("Total price: ₱", total_price)
 ============================================
 A MISTAKE I MADE (or one I want to avoid)
 ============================================
-[what's something confusing or easy to get wrong
-about this topic?]
 
+One mistake I want to avoid is confusing parameters and arguments.
+A parameter is the placeholder written when creating the function,
+while an argument is the actual value given to the function when using it.
 
 ============================================
 HOW THIS CONNECTS TO SOMETHING ELSE
