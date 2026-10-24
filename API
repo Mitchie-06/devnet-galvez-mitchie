@@ -1,0 +1,51 @@
+import random
+import requests
+
+def get_pokemon_data(pokemon_name):
+
+   url =f"https://pokeapi.co/api/v2/pokemon/{pokemon_name.lower()}"
+   try:
+
+       response = requests.get(url, timeout=5)
+       
+       if response.status_code == 200:
+           return response.json()
+       else:
+
+           print(f"Error: Status code {response.status_code} received for Pokémon '{pokemon_name}'.")
+           return None
+   except requests.exceptions.RequestException as e:
+
+       print(f"Network error occurred: {e}")
+       return None
+
+def main():
+
+   pokemon_list = ["pikachu", "bulbasaur", "charmander", "squirtle", "jigglypuff"]
+   selected_pokemon = random.choice(pokemon_list)
+   
+   print("Fetching Pokémon data from PokeAPI...")
+   data = get_pokemon_data(selected_pokemon)
+   
+   if not data:
+       print("Could not retrieve Pokémon data. Exiting game.")
+       return
+
+   name = data["name"]
+   height = data["height"]
+   weight = data["weight"]
+
+   print("\n================================")
+   print("      WHO'S THAT POKEMON?       ")
+   print("================================")
+
+   print(f"Height: {height}")
+   print(f"Weight: {weight}")
+
+
+
+   print(f"\nGame Over! You ran out of attempts.")
+   print(f"The correct Pokémon was: {name.capitalize()}.")
+
+if __name__ == "__main__":
+   main()
