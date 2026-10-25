@@ -2,50 +2,94 @@ import random
 import requests
 
 def get_pokemon_data(pokemon_name):
+    url = f"https://pokeapi.co/api/v2/pokemon/{pokemon_name.lower()}"
+    
+    try:
+        response = requests.get(url, timeout=5)
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"Error: Status code {response.status_code} received for Pokémon '{pokemon_name}'.")
+            return None
+            
+    except requests.exceptions.RequestException as e:
+        print(f"Network error occurred: {e}")
+        return None
 
-   url =f"https://pokeapi.co/api/v2/pokemon/{pokemon_name.lower()}"
-   try:
+def play_round(selected_pokemon):
+    print("\nFetching Pokémon data from PokeAPI...")
+    data = get_pokemon_data(selected_pokemon)
 
-       response = requests.get(url, timeout=5)
-       
-       if response.status_code == 200:
-           return response.json()
-       else:
+    if not data:
+        print("Could not retrieve Pokémon data. Skipping round.")
+        return
 
-           print(f"Error: Status code {response.status_code} received for Pokémon '{pokemon_name}'.")
-           return None
-   except requests.exceptions.RequestException as e:
+    name = data["name"]
+    height = data["height"]
+    weight = data["weight"]
+    
+    abilities = [item["ability"]["name"].capitalize() for item in data["abilities"]]
+    abilities_str = ", ".join(abilities)
 
-       print(f"Network error occurred: {e}")
-       return None
+    print("\n𐙚 ──────────────────────────────── 𐙚")
+    print("        WHO'S THAT POKEMON?     ")
+    print("𐙚 ──────────────────────────────── 𐙚")
+    print(f"Height:    {height}")
+    print(f"Weight:    {weight}")
+    print(f"Abilities: {abilities_str}")
+    print("\n۶۟ৎ. ݁₊ ❀ . ݁˖ . ݁❀ ⋆.. ݁₊ ❀ . ݁˖ . ݁❀ ⋆. ۶۟ৎ")
+
+    attempts = 3
+    while attempts > 0:
+        print(f"Attempts remaining: {attempts}")
+        guess = input("Enter your guess: ").strip().lower()
+        
+        if not guess:
+            print("Input cannot be empty. Please try again.\n")
+            continue
+            
+        if guess.isdigit():
+            print("Invalid input! Please enter a Pokémon name, not a number.\n")
+            continue
+            
+        if not guess.isalpha():
+            print("Invalid input! Please use letters only (no symbols or numbers).\n")
+            continue
+        
+        if guess == name:
+            print(f"\nCorrect! It's {name.capitalize()}! You won!")
+            return
+        else:
+            attempts -= 1
+            if attempts > 0:
+                print("Incorrect guess. Try again!\n")
+
+    print(f"\nGame Over! You ran out of attempts.")
+    print(f"The correct Pokémon was: {name.capitalize()}.")
 
 def main():
+    pokemon_pool = ["pikachu", "bulbasaur", "charmander", "squirtle", "jigglypuff"]
+    
+    random.shuffle(pokemon_pool)
 
-   pokemon_list = ["pikachu", "bulbasaur", "charmander", "squirtle", "jigglypuff"]
-   selected_pokemon = random.choice(pokemon_list)
-   
-   print("Fetching Pokémon data from PokeAPI...")
-   data = get_pokemon_data(selected_pokemon)
-   
-   if not data:
-       print("Could not retrieve Pokémon data. Exiting game.")
-       return
+    while pokemon_pool:
+        current_pokemon = pokemon_pool.pop()
+        play_round(current_pokemon)
 
-   name = data["name"]
-   height = data["height"]
-   weight = data["weight"]
-
-   print("\n================================")
-   print("      WHO'S THAT POKEMON?       ")
-   print("================================")
-
-   print(f"Height: {height}")
-   print(f"Weight: {weight}")
-
-
-
-   print(f"\nGame Over! You ran out of attempts.")
-   print(f"The correct Pokémon was: {name.capitalize()}.")
+        if pokemon_pool:
+            while True:
+                play_again = input("\nDo you want to play another round? (yes/no): ").strip().lower()
+                
+                if play_again in ["yes", "y"]:
+                    break
+                elif play_again in ["no", "n"]:
+                    print("\nThanks for playing!")
+                    return
+                else:
+                    print("Invalid input! Please enter 'yes' or 'no'.")
+        else:
+            print("\nYou've played through all available Pokémon! Game complete.")
 
 if __name__ == "__main__":
-   main()
+    main()
